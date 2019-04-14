@@ -1,8 +1,9 @@
 import { Point } from './models/point';
 
 export const distance = (startPoint: Point, endPoint: Point): number => {
-    return Math.sqrt( Math.abs( Math.pow(startPoint.x - endPoint.x, 2) + Math.pow(startPoint.y - endPoint.y, 2)));
+    return Math.hypot((startPoint.x - endPoint.x), (startPoint.y - endPoint.y));
 }
+
 export const angle = (startPoint: Point, endPoint: Point): number => {
     return Math.atan2((startPoint.y - endPoint.y), (startPoint.x - endPoint.x));
 }
@@ -24,7 +25,7 @@ export const translatePoint = (point: Point, distance: number, angle: number = 0
 
 export const findPointOnLine = (startPoint: Point, endPoint: Point, distanceFromStart: number): Point => {
     const fullDistance: number = distance(startPoint, endPoint);
-	const ratio: number = distanceFromStart/fullDistance;
+	const ratio: number = distanceFromStart / fullDistance;
 	return {
 		x:((1-ratio) * startPoint.x + (ratio) * endPoint.x),
 		y:((1-ratio) * startPoint.y + (ratio) * endPoint.y)
