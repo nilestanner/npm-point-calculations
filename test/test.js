@@ -19,22 +19,40 @@ describe('Point Calculation tests', () => {
         expect(result).to.equal(5);
     });
 
-    it('should calculate the distance -20 23 -15 68', () => {
+    it('should calculate the distance -20 23, -15 68', () => {
         var result = pc.distance({x: -20, y: 23}, {x: -15, y: 68});
         expect(roundNumber(result, 2)).to.equal(45.28);
     });
 
-    it('should calculate the distance 30 37 79 -51', () => {
+    it('should calculate the distance 30 37, 79 -51', () => {
         var result = pc.distance({x: 30, y: 37}, {x: 79, y: -51});
         expect(roundNumber(result, 2)).to.equal(100.72);
     });
     
-    it('should calculate the distance -69 63 57 11', () => {
+    it('should calculate the distance -69 63, 57 11', () => {
         var result = pc.distance({x: -69, y: 63}, {x: 57, y: 11});
         expect(roundNumber(result, 2)).to.equal(136.31);
     });
 
-    
+    // angle
+    it('should calculate the angle -90', () => {
+        var result = pc.angle({x: 0, y: 0}, {x: 0, y: 11});
+        expect(result).to.equal(-Math.PI/2);
+    });
 
+    it('should calculate the angle 90', () => {
+        var result = pc.angle({x: 0, y: 11}, {x: 0, y: 0});
+        expect(result).to.equal(Math.PI/2);
+    });
+
+    it('should calculate the angle 30 37, 79 -51', () => {
+        var result = pc.angle({x: 30, y: 37}, {x: 79, y: -51});
+        expect(roundNumber(result, 2)).to.equal(2.08);
+    });
+
+    it('should calculate the angle -69 63, 57 11', () => {
+        var result = pc.angle({x: -69, y: 63}, {x: 57, y: 11});
+        expect(roundNumber(result, 2)).to.equal(2.75);
+    });
 
 });
