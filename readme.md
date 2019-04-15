@@ -1,5 +1,7 @@
 # Point Calculation
 
+[![CircleCI](https://circleci.com/gh/nilestanner/npm-point-calculations.svg?style=svg)](https://circleci.com/gh/nilestanner/npm-point-calculations)
+
 A simple library that provides functions for cartesian point calculations.
 
 ## Install
