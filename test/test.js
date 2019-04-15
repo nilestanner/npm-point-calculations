@@ -76,4 +76,44 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(-2.5, 0.001);
     });
 
+    // rotate point
+
+    it('should rotate the point around 0,0 by 90 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 2);
+        expect(result.x).to.be.closeTo(0, 0.001);
+        expect(result.y).to.be.closeTo(-5, 0.001);
+    });
+
+    it('should rotate the point around 0,0 by 30 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 6);
+        expect(result.x).to.be.closeTo(4, 0.001);
+        expect(result.y).to.be.closeTo(-2, 0.001);
+    });
+
+    it('should rotate the point around 30,24 by 120 degrees', () => {
+        var result = pc.rotatePoint({x: 34, y: 25}, {x: 30, y: 24}, 2 * Math.PI / 3);
+        expect(result.x).to.be.closeTo(29, 0.001);
+        expect(result.y).to.be.closeTo(20, 0.001);
+    });
+
+    // find point along line
+
+    it('should find a point at distance 3 along 0,0 0,5', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 0, y: 5}, 3);
+        expect(result.x).to.be.closeTo(0, 0.001);
+        expect(result.y).to.be.closeTo(3, 0.001);
+    });
+
+    it('should find a point at distance 3 along 0,0 3,4', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 3, y: 4}, 3);
+        expect(result.x).to.be.closeTo(1.8, 0.001);
+        expect(result.y).to.be.closeTo(2.4, 0.001);
+    });
+
+    it('should find a point at distance 3 along 34,25 30,24', () => {
+        var result = pc.findPointOnLine({x: 34, y: 25}, {x: 30, y: 24}, 3);
+        expect(result.x).to.be.closeTo(31.09, 0.001);
+        expect(result.y).to.be.closeTo(24.272, 0.001);
+    });
+
 });

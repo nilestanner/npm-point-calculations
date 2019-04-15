@@ -11,8 +11,8 @@ export const angle = (startPoint: Point, endPoint: Point): number => {
 export const rotatePoint = (rotatingPoint: Point, centerPoint: Point, angle: number): Point => {
 	const cos: number = Math.cos(angle);
 	const sin: number = Math.sin(angle);
-	const nx: number = Math.round((cos * (centerPoint.x - rotatingPoint.x)) + (sin * (centerPoint.y - rotatingPoint.y)) + rotatingPoint.x);
-	const ny: number = Math.round((cos * (centerPoint.y - rotatingPoint.y)) - (sin * (centerPoint.x - rotatingPoint.x)) + rotatingPoint.y);
+	const nx: number = Math.round((cos * (rotatingPoint.x - centerPoint.x)) + (sin * (rotatingPoint.y - centerPoint.y)) + centerPoint.x);
+	const ny: number = Math.round((cos * (rotatingPoint.y - centerPoint.y)) - (sin * (rotatingPoint.x - centerPoint.x)) + centerPoint.y);
 	return { x:nx, y:ny };
 }
 
