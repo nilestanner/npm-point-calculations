@@ -5,6 +5,7 @@
   "main": "dist/index.js",
   "scripts": {
     "test": "mocha --reporter spec",
+    "prepublish": "npm run build && npm test",
     "build": "tsc"
   },
   "repository": {
