@@ -2,6 +2,8 @@
 
 [![Node.js CI](https://github.com/nilestanner/npm-point-calculations/actions/workflows/node.js.yml/badge.svg)](https://github.com/nilestanner/npm-point-calculations/actions/workflows/node.js.yml)
 
+[![Node.js Package](https://github.com/nilestanner/npm-point-calculations/actions/workflows/npm-publish.yml/badge.svg)](https://github.com/nilestanner/npm-point-calculations/actions/workflows/npm-publish.yml)
+
 A simple library that provides functions for cartesian point calculations.
 
 ## Install
