@@ -1,6 +1,6 @@
 {
   "name": "point-calculation",
-  "version": "1.0.5",
+  "version": "1.1.0",
   "description": "A module that includes some helpful modules for working with cartesian coordinates",
   "main": "dist/index.js",
   "scripts": {
