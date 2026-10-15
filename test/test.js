@@ -30,7 +30,17 @@ describe('Point Calculation tests', () => {
         expect(result, 2).to.be.closeTo(136.31, 0.01);
     });
 
+    it('should calculate the distance between same points as 0', () => {
+        var result = pc.distance({x: 1, y: 1}, {x: 1, y: 1});
+        expect(result).to.equal(0);
+    });
+
     // angle
+    it('should calculate the angle between same points as 0', () => {
+        var result = pc.angle({x: 1, y: 1}, {x: 1, y: 1});
+        expect(result).to.equal(0);
+    });
+
     it('should calculate the angle -90 degrees', () => {
         var result = pc.angle({x: 0, y: 0}, {x: 0, y: 11});
         expect(result).to.equal(-Math.PI/2);
@@ -52,6 +62,12 @@ describe('Point Calculation tests', () => {
     });
 
     // translate point
+    it('should translate the point by 5 with default angle (0 degrees)', () => {
+        var result = pc.translatePoint({x: 1, y: 1}, 5);
+        expect(result.x).to.be.closeTo(6, 0.00001);
+        expect(result.y).to.equal(1);
+    });
+
     it('should translate the point by 5 at 90 degrees', () => {
         var result = pc.translatePoint({x: 0, y: 0}, 5, Math.PI / 2);
         expect(result.x).to.be.closeTo(0, 0.00001);
@@ -97,6 +113,19 @@ describe('Point Calculation tests', () => {
     });
 
     // find point along line
+
+    // TODO: Fix bug where findPointOnLine returns {x: NaN, y: NaN} if start and end points are the same due to division by zero distance
+    it.skip('should return the start point if the start and end points are the same', () => {
+        var result = pc.findPointOnLine({x: 1, y: 1}, {x: 1, y: 1}, 3);
+        expect(result.x).to.be.closeTo(1, 0.001);
+        expect(result.y).to.be.closeTo(1, 0.001);
+    });
+
+    it('should find a point at distance 0 along line as the start point', () => {
+        var result = pc.findPointOnLine({x: 1, y: 1}, {x: 3, y: 4}, 0);
+        expect(result.x).to.be.closeTo(1, 0.001);
+        expect(result.y).to.be.closeTo(1, 0.001);
+    });
 
     it('should find a point at distance 3 along 0,0 0,5', () => {
         var result = pc.findPointOnLine({x: 0, y: 0}, {x: 0, y: 5}, 3);

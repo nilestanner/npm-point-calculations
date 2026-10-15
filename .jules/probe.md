@@ -1,0 +1,3 @@
+## 2024-03-24 - Zero-distance bug in findPointOnLine
+**Learning:** `findPointOnLine` relies on dividing by the total distance between the start and end points (`ratio = distanceFromStart / fullDistance`). If the start and end points are identical, `fullDistance` is 0, causing `ratio` to evaluate to `Infinity` or `NaN` (if `distanceFromStart` is also 0), resulting in the function returning `{x: NaN, y: NaN}`.
+**Action:** When testing geometric calculations involving distances or angles, always include boundary tests where the start and end points are the same, as this frequently exposes division-by-zero vulnerabilities.
