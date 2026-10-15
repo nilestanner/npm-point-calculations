@@ -116,4 +116,10 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(24.272, 0.001);
     });
 
+    it('should handle findPointOnLine with zero distance line', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 0, y: 0}, 5);
+        expect(result.x).to.equal(0);
+        expect(result.y).to.equal(0);
+    });
+
 });
