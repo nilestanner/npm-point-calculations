@@ -25,6 +25,10 @@ export const translatePoint = (point: Point, distance: number, angle: number = 0
 
 export const findPointOnLine = (startPoint: Point, endPoint: Point, distanceFromStart: number): Point => {
     const fullDistance: number = distance(startPoint, endPoint);
+	if (fullDistance === 0) {
+		// Prevent division by zero which results in NaN
+		return { x: startPoint.x, y: startPoint.y };
+	}
 	const ratio: number = distanceFromStart / fullDistance;
 	return {
 		x:((1-ratio) * startPoint.x + (ratio) * endPoint.x),
