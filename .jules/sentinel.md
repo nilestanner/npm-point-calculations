@@ -1,0 +1,4 @@
+## 2024-03-20 - [Unhandled Division by Zero in Geometric Calculations]
+**Vulnerability:** [The `findPointOnLine` function calculated `distanceFromStart / fullDistance` where `fullDistance` could be `0` when `startPoint` and `endPoint` are identical. This caused a division by zero error resulting in `NaN` (Not a Number) values propagating out of the geometric boundary which can lead to Denial of Service or logic bypasses up the call stack.]
+**Learning:** [Geometric/math helper libraries that take coordinates as input often miss validation checks for zero-length paths, resulting in subtle issues with floating point division. This allows an attacker to poison state with `NaN` / `Infinity` if user inputs control the geometric coordinates directly or indirectly.]
+**Prevention:** [Always validate and handle distance checks before division, specifically ensuring that denominators cannot evaluate to 0 in math/geometry utility functions.]

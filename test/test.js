@@ -116,4 +116,10 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(24.272, 0.001);
     });
 
+    it('should find a point at distance 3 along a 0 length line 30,24 30,24', () => {
+        var result = pc.findPointOnLine({x: 30, y: 24}, {x: 30, y: 24}, 3);
+        expect(result.x).to.be.closeTo(30, 0.001);
+        expect(result.y).to.be.closeTo(24, 0.001);
+    });
+
 });
