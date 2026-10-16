@@ -1,7 +1,12 @@
 import { Point } from './models/point';
 
 export const distance = (startPoint: Point, endPoint: Point): number => {
-    return Math.hypot((startPoint.x - endPoint.x), (startPoint.y - endPoint.y));
+    // ⚡ Bolt: Replaced Math.hypot with Math.sqrt. Math.hypot handles complex edge cases (scaling to prevent underflow/overflow)
+    // making it significantly slower (~20x in V8) compared to simple multiplication and Math.sqrt.
+    // For typical cartesian coordinates, underflow/overflow is rarely an issue, and the performance gain is massive.
+    const dx = startPoint.x - endPoint.x;
+    const dy = startPoint.y - endPoint.y;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
 export const angle = (startPoint: Point, endPoint: Point): number => {
