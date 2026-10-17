@@ -116,4 +116,10 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(24.272, 0.001);
     });
 
+    it('should safely handle identical start and end points (zero distance)', () => {
+        var result = pc.findPointOnLine({x: 5, y: 5}, {x: 5, y: 5}, 3);
+        expect(result.x).to.equal(5);
+        expect(result.y).to.equal(5);
+    });
+
 });
