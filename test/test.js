@@ -52,6 +52,12 @@ describe('Point Calculation tests', () => {
     });
 
     // translate point
+    it('should translate the point by 5 at default angle (0 degrees)', () => {
+        var result = pc.translatePoint({x: 0, y: 0}, 5);
+        expect(result.x).to.be.closeTo(5, 0.00001);
+        expect(result.y).to.equal(0);
+    });
+
     it('should translate the point by 5 at 90 degrees', () => {
         var result = pc.translatePoint({x: 0, y: 0}, 5, Math.PI / 2);
         expect(result.x).to.be.closeTo(0, 0.00001);
