@@ -5,6 +5,11 @@ var pc = require('../dist/index.js');
 describe('Point Calculation tests', () => {
 
     // distance
+    it('should calculate the distance (identical points)', () => {
+        var result = pc.distance({x: 5, y: 5}, {x: 5, y: 5});
+        expect(result).to.equal(0);
+    });
+
     it('should calculate the distance (linear)', () => {
         var result = pc.distance({x: 2, y: 2}, {x: 2, y: 4});
         expect(result).to.equal(2);
@@ -52,6 +57,12 @@ describe('Point Calculation tests', () => {
     });
 
     // translate point
+    it('should translate the point by 5 with default angle', () => {
+        var result = pc.translatePoint({x: 0, y: 0}, 5);
+        expect(result.x).to.equal(5);
+        expect(result.y).to.equal(0);
+    });
+
     it('should translate the point by 5 at 90 degrees', () => {
         var result = pc.translatePoint({x: 0, y: 0}, 5, Math.PI / 2);
         expect(result.x).to.be.closeTo(0, 0.00001);
