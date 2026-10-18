@@ -116,4 +116,21 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(24.272, 0.001);
     });
 
+    // Validation checks
+    describe('Validation tests', () => {
+        it('should throw an error for invalid points', () => {
+            expect(() => pc.distance(null, {x: 2, y: 4})).to.throw('Invalid point coordinates');
+            expect(() => pc.distance({x: '2', y: 4}, {x: 2, y: 4})).to.throw('Invalid point coordinates');
+            expect(() => pc.distance({x: 2, y: NaN}, {x: 2, y: 4})).to.throw('Invalid point coordinates');
+        });
+
+        it('should throw an error when start and end point are the same', () => {
+            expect(() => pc.findPointOnLine({x: 0, y: 0}, {x: 0, y: 0}, 3)).to.throw('Start and end points cannot be the same');
+        });
+
+        it('should throw an error for invalid angle in rotatePoint', () => {
+            expect(() => pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, '90')).to.throw('Invalid angle');
+        });
+    });
+
 });
