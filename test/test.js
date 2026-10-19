@@ -76,6 +76,12 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(-2.5, 0.001);
     });
 
+    it('should translate the point by 5 with default angle (0 degrees)', () => {
+        var result = pc.translatePoint({x: 0, y: 0}, 5);
+        expect(result.x).to.equal(5);
+        expect(result.y).to.equal(0);
+    });
+
     // rotate point
 
     it('should rotate the point around 0,0 by 90 degrees', () => {
