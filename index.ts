@@ -1,7 +1,10 @@
 import { Point } from './models/point';
 
 export const distance = (startPoint: Point, endPoint: Point): number => {
-    return Math.hypot((startPoint.x - endPoint.x), (startPoint.y - endPoint.y));
+    // Math.sqrt is significantly faster than Math.hypot for 2D distance calculation
+    const dx = startPoint.x - endPoint.x;
+    const dy = startPoint.y - endPoint.y;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
 export const angle = (startPoint: Point, endPoint: Point): number => {
