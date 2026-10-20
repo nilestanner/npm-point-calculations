@@ -116,4 +116,10 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(24.272, 0.001);
     });
 
+    it('should prevent NaN when finding a point on a line with identical start and end points (zero distance)', () => {
+        var result = pc.findPointOnLine({x: 10, y: 10}, {x: 10, y: 10}, 5);
+        expect(result.x).to.equal(10);
+        expect(result.y).to.equal(10);
+    });
+
 });
