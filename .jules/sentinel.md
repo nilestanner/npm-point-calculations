@@ -1,0 +1,4 @@
+## 2025-02-23 - Prevent Division by Zero resulting in NaN
+**Vulnerability:** A missing check for zero distance in `findPointOnLine` resulted in a division by zero. This division by zero creates a `NaN` ratio, which propagates `NaN` into the X and Y coordinates. This `NaN` contamination can break data structures, invalidate rendering logic, or cause denial-of-service (DoS) if these invalid points trigger infinite loops or uncontrolled recursion in dependent systems.
+**Learning:** Math functions that perform division using derived values (like Euclidean distance) are inherently risky when the inputs can result in a zero denominator. The logic incorrectly assumed start and end points would always be distinct.
+**Prevention:** Always validate inputs or intermediate derived values before using them as denominators in mathematical operations. Return a safe, defined fallback (like the original starting point) when operations cannot be mathematically resolved safely.
