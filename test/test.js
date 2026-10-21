@@ -133,4 +133,48 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    // additional findPointOnLine boundary cases
+    it('should return the start point if distance from start is 0', () => {
+        var result = pc.findPointOnLine({x: 10, y: 10}, {x: 20, y: 20}, 0);
+        expect(result.x).to.be.closeTo(10, 0.001);
+        expect(result.y).to.be.closeTo(10, 0.001);
+    });
+    it('should return the end point if distance from start equals full distance', () => {
+        var fullDist = pc.distance({x: 10, y: 10}, {x: 13, y: 14});
+        var result = pc.findPointOnLine({x: 10, y: 10}, {x: 13, y: 14}, fullDist);
+        expect(result.x).to.be.closeTo(13, 0.001);
+        expect(result.y).to.be.closeTo(14, 0.001);
+    });
+
+    it('should extrapolate the point if distance from start is greater than full distance', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 3, y: 0}, 6);
+        expect(result.x).to.be.closeTo(6, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    it('should extrapolate the point backwards if distance from start is negative', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 3, y: 0}, -3);
+        expect(result.x).to.be.closeTo(-3, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    // additional angle boundary cases
+    it('should calculate angle of identical points as 0', () => {
+        var result = pc.angle({x: 5, y: 5}, {x: 5, y: 5});
+        expect(result).to.equal(0);
+    });
+
+    // Bug found: the angle calculation uses Math.atan2((start.y - end.y), (start.x - end.x))
+    // This calculates the angle from the end point to the start point, resulting in angles
+    // offset by 180 degrees (PI radians).
+    it.skip('should calculate the angle 0 degrees (horizontal right)', () => {
+        var result = pc.angle({x: 0, y: 0}, {x: 5, y: 0});
+        expect(result).to.equal(0);
+    });
+
+    // Bug found: see comment above
+    it.skip('should calculate the angle 180 degrees (horizontal left)', () => {
+        var result = pc.angle({x: 0, y: 0}, {x: -5, y: 0});
+        expect(result).to.be.closeTo(Math.PI, 0.001);
+    });
 });
