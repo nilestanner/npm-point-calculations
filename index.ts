@@ -11,15 +11,19 @@ export const angle = (startPoint: Point, endPoint: Point): number => {
 export const rotatePoint = (rotatingPoint: Point, centerPoint: Point, angle: number): Point => {
 	const cos: number = Math.cos(angle);
 	const sin: number = Math.sin(angle);
-	const nx: number = Math.round((cos * (rotatingPoint.x - centerPoint.x)) + (sin * (rotatingPoint.y - centerPoint.y)) + centerPoint.x);
-	const ny: number = Math.round((cos * (rotatingPoint.y - centerPoint.y)) - (sin * (rotatingPoint.x - centerPoint.x)) + centerPoint.y);
+    // Security enhancement: coerce centerPoint coordinates to numbers to prevent
+    // type confusion and unintended string concatenation if string inputs are provided.
+	const nx: number = Math.round((cos * (rotatingPoint.x - centerPoint.x)) + (sin * (rotatingPoint.y - centerPoint.y)) + Number(centerPoint.x));
+	const ny: number = Math.round((cos * (rotatingPoint.y - centerPoint.y)) - (sin * (rotatingPoint.x - centerPoint.x)) + Number(centerPoint.y));
 	return { x:nx, y:ny };
 }
 
 export const translatePoint = (point: Point, distance: number, angle: number = 0): Point => {
+    // Security enhancement: coerce point coordinates to numbers to prevent
+    // type confusion and unintended string concatenation.
     return {
-		x:(Math.cos(angle) * distance) + point.x,
-		y:(Math.sin(angle) * distance) + point.y
+		x:(Math.cos(angle) * distance) + Number(point.x),
+		y:(Math.sin(angle) * distance) + Number(point.y)
 	};
 }
 
@@ -31,8 +35,10 @@ export const findPointOnLine = (startPoint: Point, endPoint: Point, distanceFrom
         return { ...startPoint };
     }
 	const ratio: number = distanceFromStart / fullDistance;
+    // Security enhancement: coerce startPoint coordinates to numbers to prevent
+    // type confusion and unintended string concatenation.
 	return {
-		x:((1-ratio) * startPoint.x + (ratio) * endPoint.x),
-		y:((1-ratio) * startPoint.y + (ratio) * endPoint.y)
+		x:((1-ratio) * Number(startPoint.x) + (ratio) * Number(endPoint.x)),
+		y:((1-ratio) * Number(startPoint.y) + (ratio) * Number(endPoint.y))
 	};
 }

@@ -87,6 +87,12 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(-2.5, 0.001);
     });
 
+    it('should coerce string coordinates when translating to prevent string concatenation', () => {
+        var result = pc.translatePoint({x: "5", y: "5"}, 10, 0);
+        expect(result.x).to.equal(15);
+        expect(result.y).to.equal(5);
+    });
+
     // rotate point
 
     it('should rotate the point around 0,0 by 90 degrees', () => {
@@ -105,6 +111,12 @@ describe('Point Calculation tests', () => {
         var result = pc.rotatePoint({x: 34, y: 25}, {x: 30, y: 24}, 2 * Math.PI / 3);
         expect(result.x).to.be.closeTo(29, 0.001);
         expect(result.y).to.be.closeTo(20, 0.001);
+    });
+
+    it('should coerce string coordinates when rotating to prevent string concatenation', () => {
+        var result = pc.rotatePoint({x: "5", y: "5"}, {x: "0", y: "0"}, 0);
+        expect(result.x).to.equal(5);
+        expect(result.y).to.equal(5);
     });
 
     // find point along line
@@ -131,6 +143,12 @@ describe('Point Calculation tests', () => {
         var result = pc.findPointOnLine({x: 10, y: 10}, {x: 10, y: 10}, 5);
         expect(result.x).to.equal(10);
         expect(result.y).to.equal(10);
+    });
+
+    it('should coerce string coordinates when finding a point on a line to prevent string concatenation', () => {
+        var result = pc.findPointOnLine({x: "0", y: "0"}, {x: "5", y: "5"}, 2.5);
+        expect(result.x).to.be.closeTo(1.767, 0.001);
+        expect(result.y).to.be.closeTo(1.767, 0.001);
     });
 
 });
