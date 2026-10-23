@@ -133,4 +133,17 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    // Validation tests
+    it('should throw TypeError on invalid point input', () => {
+        expect(() => pc.distance(null, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: '5', y: 5}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: 5, y: NaN}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+    });
+
+    it('should throw TypeError on invalid number input', () => {
+        expect(() => pc.translatePoint({x: 5, y: 5}, 10, '5')).to.throw(TypeError, 'Invalid number provided for angle');
+        expect(() => pc.translatePoint({x: 5, y: 5}, NaN, 0)).to.throw(TypeError, 'Invalid number provided for distance');
+        expect(() => pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 10}, null)).to.throw(TypeError, 'Invalid number provided for distanceFromStart');
+    });
+
 });
