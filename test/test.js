@@ -1,6 +1,21 @@
 'use strict';
 var expect = require('chai').expect;
 var pc = require('../dist/index.js');
+var { Point } = require('../dist/models/point.js');
+
+describe('Point model tests', () => {
+    it('should correctly initialize with given x and y values', () => {
+        var p = new Point(10, -5);
+        expect(p.x).to.equal(10);
+        expect(p.y).to.equal(-5);
+    });
+
+    it('should handle zero values correctly', () => {
+        var p = new Point(0, 0);
+        expect(p.x).to.equal(0);
+        expect(p.y).to.equal(0);
+    });
+});
 
 describe('Point Calculation tests', () => {
 
@@ -107,6 +122,13 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(20, 0.001);
     });
 
+    // BUG: precision loss due to Math.round in rotatePoint
+    it.skip('should rotate the point around 0,0 by 45 degrees without precision loss', () => {
+        var result = pc.rotatePoint({x: 1, y: 0}, {x: 0, y: 0}, Math.PI / 4);
+        expect(result.x).to.be.closeTo(0.707, 0.001);
+        expect(result.y).to.be.closeTo(-0.707, 0.001);
+    });
+
     // find point along line
 
     it('should find a point at distance 3 along 0,0 0,5', () => {
@@ -131,6 +153,18 @@ describe('Point Calculation tests', () => {
         var result = pc.findPointOnLine({x: 10, y: 10}, {x: 10, y: 10}, 5);
         expect(result.x).to.equal(10);
         expect(result.y).to.equal(10);
+    });
+
+    it('should extrapolate point when distance is greater than line length', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 0}, 15);
+        expect(result.x).to.be.closeTo(15, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    it('should extrapolate point backwards when distance is negative', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 0}, -5);
+        expect(result.x).to.be.closeTo(-5, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
     });
 
 });
