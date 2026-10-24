@@ -133,4 +133,11 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    it('should strip injected properties when finding a point on a line with identical start and end points', () => {
+        var result = pc.findPointOnLine({x: 10, y: 10, malicious: true}, {x: 10, y: 10}, 5);
+        expect(result.x).to.equal(10);
+        expect(result.y).to.equal(10);
+        expect(result.malicious).to.be.undefined;
+    });
+
 });
