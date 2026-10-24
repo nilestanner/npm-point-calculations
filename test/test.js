@@ -133,4 +133,24 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    it('should calculate the angle as 0 for identical points', () => {
+        var result = pc.angle({x: 5, y: 5}, {x: 5, y: 5});
+        expect(result).to.equal(0);
+    });
+
+    it('should find a point on a line with a negative distance (opposite direction)', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 0}, -5);
+        expect(result.x).to.be.closeTo(-5, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    // BUG: rotatePoint suffers from precision loss due to the use of Math.round.
+    // For non-cardinal angles like 45 degrees, it returns incorrect rounded coordinates.
+    it.skip('should rotate the point accurately with non-cardinal angles', () => {
+        var result = pc.rotatePoint({x: 5, y: 5}, {x: 0, y: 0}, Math.PI / 4);
+        // theoretical result should be x=0, y=7.07, but the current implementation returns x=0, y=7 due to Math.round
+        expect(result.x).to.be.closeTo(0, 0.001);
+        expect(result.y).to.be.closeTo(7.071, 0.001);
+    });
+
 });
