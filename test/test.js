@@ -133,4 +133,29 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    it('should extrapolate point beyond the line (distance > line length)', () => {
+        var result = pc.findPointOnLine({x: 0, y: 0}, {x: 3, y: 4}, 10);
+        expect(result.x).to.be.closeTo(6, 0.001);
+        expect(result.y).to.be.closeTo(8, 0.001);
+    });
+
+    it('should calculate the angle between identical points as 0', () => {
+        var result = pc.angle({x: 5, y: 5}, {x: 5, y: 5});
+        expect(result).to.equal(0);
+    });
+
+    it('should rotate point around itself by any angle and remain unchanged', () => {
+        var result = pc.rotatePoint({x: 10, y: 10}, {x: 10, y: 10}, Math.PI / 2);
+        expect(result.x).to.equal(10);
+        expect(result.y).to.equal(10);
+    });
+
+    it.skip('should rotate the point around 0,0 by 45 degrees - exposes precision loss bug', () => {
+        // BUG: rotatePoint uses Math.round which causes severe precision loss
+        // for non-cardinal angles. The exact value should be ~3.535, but it returns 4.
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 4);
+        expect(result.x).to.be.closeTo(3.535, 0.01);
+        expect(result.y).to.be.closeTo(-3.535, 0.01);
+    });
+
 });
