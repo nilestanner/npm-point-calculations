@@ -2,3 +2,8 @@
 **Vulnerability:** A missing check for zero distance in `findPointOnLine` resulted in a division by zero. This division by zero creates a `NaN` ratio, which propagates `NaN` into the X and Y coordinates. This `NaN` contamination can break data structures, invalidate rendering logic, or cause denial-of-service (DoS) if these invalid points trigger infinite loops or uncontrolled recursion in dependent systems.
 **Learning:** Math functions that perform division using derived values (like Euclidean distance) are inherently risky when the inputs can result in a zero denominator. The logic incorrectly assumed start and end points would always be distinct.
 **Prevention:** Always validate inputs or intermediate derived values before using them as denominators in mathematical operations. Return a safe, defined fallback (like the original starting point) when operations cannot be mathematically resolved safely.
+
+## 2025-02-14 - Prevent Data Leakage from Object Spread on Geometric Models
+**Vulnerability:** Object spread (`...`) was used when returning a `Point` model if the distance was zero in `findPointOnLine`.
+**Learning:** Returning models directly or via object spread can expose internal properties or allow property injection/data leakage. Structural typing relying on simple assignment is safer.
+**Prevention:** Avoid object spreads when returning geometric models; explicitly assign properties instead.

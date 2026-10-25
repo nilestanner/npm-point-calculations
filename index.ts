@@ -27,8 +27,9 @@ export const findPointOnLine = (startPoint: Point, endPoint: Point, distanceFrom
     const fullDistance: number = distance(startPoint, endPoint);
     // Security concern: prevent division by zero resulting in NaN values
     // propagating through the application and causing instability or DoS.
+    // Avoid object spreads (...) to prevent property injection and data leakage.
     if (fullDistance === 0) {
-        return { ...startPoint };
+        return { x: startPoint.x, y: startPoint.y };
     }
 	const ratio: number = distanceFromStart / fullDistance;
 	return {
