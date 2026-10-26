@@ -1,7 +1,11 @@
 import { Point } from './models/point';
 
 export const distance = (startPoint: Point, endPoint: Point): number => {
-    return Math.hypot((startPoint.x - endPoint.x), (startPoint.y - endPoint.y));
+    // ⚡ Bolt Optimization: Use manual Math.sqrt(dx*dx + dy*dy) instead of Math.hypot.
+    // In V8/Node.js, Math.sqrt is significantly faster for performance-critical geometric calculations.
+    const dx = startPoint.x - endPoint.x;
+    const dy = startPoint.y - endPoint.y;
+    return Math.sqrt(dx * dx + dy * dy);
 }
 
 export const angle = (startPoint: Point, endPoint: Point): number => {
