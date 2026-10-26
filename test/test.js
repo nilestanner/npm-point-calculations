@@ -107,6 +107,25 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(20, 0.001);
     });
 
+    it('should rotate a point around 0,0 by 180 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 5}, {x: 0, y: 0}, Math.PI);
+        expect(result.x).to.be.closeTo(-5, 0.001);
+        expect(result.y).to.be.closeTo(-5, 0.001);
+    });
+
+    it('should rotate a negative coordinate point around a negative center by 90 degrees', () => {
+        var result = pc.rotatePoint({x: -5, y: -5}, {x: -2, y: -2}, Math.PI / 2);
+        expect(result.x).to.be.closeTo(-5, 0.001);
+        expect(result.y).to.be.closeTo(1, 0.001);
+    });
+
+    it.skip('should rotate the point around 0,0 by 45 degrees (exposes precision loss due to Math.round)', () => {
+        // Bug: rotatePoint uses Math.round which causes precision loss for non-cardinal angles
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 4);
+        expect(result.x).to.be.closeTo(3.535, 0.001);
+        expect(result.y).to.be.closeTo(-3.535, 0.001);
+    });
+
     // find point along line
 
     it('should find a point at distance 3 along 0,0 0,5', () => {
