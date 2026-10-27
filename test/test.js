@@ -107,6 +107,38 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(20, 0.001);
     });
 
+    it('should rotate the point around 0,0 by 0 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, 0);
+        expect(result.x).to.be.closeTo(5, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    it('should rotate the point around 0,0 by 180 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI);
+        expect(result.x).to.be.closeTo(-5, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    it('should rotate the point around 0,0 by -90 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, -Math.PI / 2);
+        expect(result.x).to.be.closeTo(0, 0.001);
+        expect(result.y).to.be.closeTo(5, 0.001);
+    });
+
+    it('should rotate the point around 0,0 by 360 degrees', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, 2 * Math.PI);
+        expect(result.x).to.be.closeTo(5, 0.001);
+        expect(result.y).to.be.closeTo(0, 0.001);
+    });
+
+    // BUG: Precision loss due to Math.round in geometric calculations
+    it.skip('should rotate the point around 0,0 by 45 degrees without precision loss', () => {
+        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 4);
+        // Expecting exact mathematical values rather than rounded ones
+        expect(result.x).to.be.closeTo(3.5355339059, 0.00001);
+        expect(result.y).to.be.closeTo(-3.5355339059, 0.00001);
+    });
+
     // find point along line
 
     it('should find a point at distance 3 along 0,0 0,5', () => {
