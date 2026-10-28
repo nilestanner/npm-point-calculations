@@ -177,3 +177,13 @@ describe('Runtime input validation', () => {
         expect(pc.distance({ x: 0, y: 0 }, { x: 1e-200, y: 0 })).to.equal(1e-200);
     });
 });
+
+
+describe('Point return shape', () => {
+    it('returns only coordinates for identical endpoints', () => {
+        const start = { x: 10, y: 10, metadata: 'private' };
+        const result = pc.findPointOnLine(start, { x: 10, y: 10 }, 5);
+        expect(result).to.deep.equal({ x: 10, y: 10 });
+        expect(result).not.to.equal(start);
+    });
+});
