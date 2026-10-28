@@ -1,14 +1,14 @@
 import { Point } from './models/point';
 
-// Security enhancement: Prevent TypeErrors and NaN propagation (DoS vectors) by checking structural typing at runtime.
+// Validate coordinates and scalar parameters before performing calculations.
 const assertValidPoint = (point: Point): void => {
-    if (!point || typeof point.x !== 'number' || Number.isNaN(point.x) || typeof point.y !== 'number' || Number.isNaN(point.y)) {
+    if (!point || !Number.isFinite(point.x) || !Number.isFinite(point.y)) {
         throw new TypeError('Invalid point object provided');
     }
 }
 
 const assertValidNumber = (value: number, paramName: string): void => {
-    if (typeof value !== 'number' || Number.isNaN(value)) {
+    if (!Number.isFinite(value)) {
         throw new TypeError(`Invalid number provided for ${paramName}`);
     }
 }
