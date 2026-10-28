@@ -133,4 +133,47 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    // Validation tests
+    it('should throw TypeError on invalid point input', () => {
+        expect(() => pc.distance(null, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: '5', y: 5}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: 5, y: NaN}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+    });
+
+    it('should throw TypeError on invalid number input', () => {
+        expect(() => pc.translatePoint({x: 5, y: 5}, 10, '5')).to.throw(TypeError, 'Invalid number provided for angle');
+        expect(() => pc.translatePoint({x: 5, y: 5}, NaN, 0)).to.throw(TypeError, 'Invalid number provided for distance');
+        expect(() => pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 10}, null)).to.throw(TypeError, 'Invalid number provided for distanceFromStart');
+    });
+
+});
+
+describe('Runtime input validation', () => {
+    it('rejects non-finite coordinates in every calculation', () => {
+        const valid = { x: 0, y: 0 };
+        for (const value of [NaN, Infinity, -Infinity]) {
+            for (const invalid of [{ x: value, y: 0 }, { x: 0, y: value }]) {
+                for (const fn of [pc.distance, pc.angle, (a, b) => pc.rotatePoint(a, b, 0), (a, b) => pc.findPointOnLine(a, b, 1)]) {
+                    expect(() => fn(invalid, valid)).to.throw(TypeError);
+                    expect(() => fn(valid, invalid)).to.throw(TypeError);
+                }
+                expect(() => pc.translatePoint(invalid, 1)).to.throw(TypeError);
+            }
+        }
+    });
+
+    it('rejects non-finite distances and angles', () => {
+        const point = { x: 0, y: 0 };
+        for (const value of [NaN, Infinity, -Infinity]) {
+            expect(() => pc.rotatePoint(point, point, value)).to.throw(TypeError);
+            expect(() => pc.translatePoint(point, value)).to.throw(TypeError);
+            expect(() => pc.translatePoint(point, 1, value)).to.throw(TypeError);
+            expect(() => pc.findPointOnLine(point, point, value)).to.throw(TypeError);
+        }
+    });
+
+    it('preserves distance accuracy for extreme finite coordinates', () => {
+        expect(pc.distance({ x: 0, y: 0 }, { x: 1e200, y: 0 })).to.equal(1e200);
+        expect(pc.distance({ x: 0, y: 0 }, { x: 1e-200, y: 0 })).to.equal(1e-200);
+    });
 });
