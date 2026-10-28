@@ -1,11 +1,7 @@
 import { Point } from './models/point';
 
 export const distance = (startPoint: Point, endPoint: Point): number => {
-    // Performance optimization: Math.sqrt(dx*dx + dy*dy) is up to ~30x faster than Math.hypot
-    // by avoiding the overhead of handling arbitrary arguments and preventing underflow/overflow.
-    const dx = startPoint.x - endPoint.x;
-    const dy = startPoint.y - endPoint.y;
-    return Math.sqrt(dx * dx + dy * dy);
+    return Math.hypot((startPoint.x - endPoint.x), (startPoint.y - endPoint.y));
 }
 
 export const angle = (startPoint: Point, endPoint: Point): number => {
