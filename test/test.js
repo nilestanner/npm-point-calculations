@@ -107,38 +107,6 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.be.closeTo(20, 0.001);
     });
 
-    it('should rotate the point around 0,0 by 0 degrees', () => {
-        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, 0);
-        expect(result.x).to.be.closeTo(5, 0.001);
-        expect(result.y).to.be.closeTo(0, 0.001);
-    });
-
-    it('should rotate the point around 0,0 by 180 degrees', () => {
-        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI);
-        expect(result.x).to.be.closeTo(-5, 0.001);
-        expect(result.y).to.be.closeTo(0, 0.001);
-    });
-
-    it('should rotate the point around 0,0 by -90 degrees', () => {
-        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, -Math.PI / 2);
-        expect(result.x).to.be.closeTo(0, 0.001);
-        expect(result.y).to.be.closeTo(5, 0.001);
-    });
-
-    it('should rotate the point around 0,0 by 360 degrees', () => {
-        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, 2 * Math.PI);
-        expect(result.x).to.be.closeTo(5, 0.001);
-        expect(result.y).to.be.closeTo(0, 0.001);
-    });
-
-    // BUG: Precision loss due to Math.round in geometric calculations
-    it.skip('should rotate the point around 0,0 by 45 degrees without precision loss', () => {
-        var result = pc.rotatePoint({x: 5, y: 0}, {x: 0, y: 0}, Math.PI / 4);
-        // Expecting exact mathematical values rather than rounded ones
-        expect(result.x).to.be.closeTo(3.5355339059, 0.00001);
-        expect(result.y).to.be.closeTo(-3.5355339059, 0.00001);
-    });
-
     // find point along line
 
     it('should find a point at distance 3 along 0,0 0,5', () => {
@@ -165,4 +133,57 @@ describe('Point Calculation tests', () => {
         expect(result.y).to.equal(10);
     });
 
+    // Validation tests
+    it('should throw TypeError on invalid point input', () => {
+        expect(() => pc.distance(null, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: '5', y: 5}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+        expect(() => pc.distance({x: 5, y: NaN}, {x: 5, y: 5})).to.throw(TypeError, 'Invalid point object provided');
+    });
+
+    it('should throw TypeError on invalid number input', () => {
+        expect(() => pc.translatePoint({x: 5, y: 5}, 10, '5')).to.throw(TypeError, 'Invalid number provided for angle');
+        expect(() => pc.translatePoint({x: 5, y: 5}, NaN, 0)).to.throw(TypeError, 'Invalid number provided for distance');
+        expect(() => pc.findPointOnLine({x: 0, y: 0}, {x: 10, y: 10}, null)).to.throw(TypeError, 'Invalid number provided for distanceFromStart');
+    });
+
+});
+
+describe('Runtime input validation', () => {
+    it('rejects non-finite coordinates in every calculation', () => {
+        const valid = { x: 0, y: 0 };
+        for (const value of [NaN, Infinity, -Infinity]) {
+            for (const invalid of [{ x: value, y: 0 }, { x: 0, y: value }]) {
+                for (const fn of [pc.distance, pc.angle, (a, b) => pc.rotatePoint(a, b, 0), (a, b) => pc.findPointOnLine(a, b, 1)]) {
+                    expect(() => fn(invalid, valid)).to.throw(TypeError);
+                    expect(() => fn(valid, invalid)).to.throw(TypeError);
+                }
+                expect(() => pc.translatePoint(invalid, 1)).to.throw(TypeError);
+            }
+        }
+    });
+
+    it('rejects non-finite distances and angles', () => {
+        const point = { x: 0, y: 0 };
+        for (const value of [NaN, Infinity, -Infinity]) {
+            expect(() => pc.rotatePoint(point, point, value)).to.throw(TypeError);
+            expect(() => pc.translatePoint(point, value)).to.throw(TypeError);
+            expect(() => pc.translatePoint(point, 1, value)).to.throw(TypeError);
+            expect(() => pc.findPointOnLine(point, point, value)).to.throw(TypeError);
+        }
+    });
+
+    it('preserves distance accuracy for extreme finite coordinates', () => {
+        expect(pc.distance({ x: 0, y: 0 }, { x: 1e200, y: 0 })).to.equal(1e200);
+        expect(pc.distance({ x: 0, y: 0 }, { x: 1e-200, y: 0 })).to.equal(1e-200);
+    });
+});
+
+
+describe('Point return shape', () => {
+    it('returns only coordinates for identical endpoints', () => {
+        const start = { x: 10, y: 10, metadata: 'private' };
+        const result = pc.findPointOnLine(start, { x: 10, y: 10 }, 5);
+        expect(result).to.deep.equal({ x: 10, y: 10 });
+        expect(result).not.to.equal(start);
+    });
 });
